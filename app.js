@@ -23,6 +23,7 @@ app.use(express.static("public"));
 app.get("/", function (req, res) {
   res.render("home", {
     content: homeStartingContent,
+    postData: postData,
   });
 });
 app.get("/about", function (req, res) {
@@ -46,7 +47,6 @@ app.post("/compose", function (req, res) {
     description: req.body.postDescr,
   };
 postData.push(post);
-console.log(postData);
 res.redirect('/');
 });
 
