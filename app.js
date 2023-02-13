@@ -42,11 +42,16 @@ app.get("/compose", function (req, res) {
 });
 
 app.get("/posts/:postTitle", (req, res) => {
+  const requestTitle = req.params.postTitle;
+  const found = postData.find(post => post.title == requestTitle)
+  console.log(found);
+
   res.render("post", {
-    postTitle: "test",
-    postDescr: "testDescr",
+    postTitle: found.title,
+    postDescr: found.description,
   });
 });
+
 
 app.post("/compose", function (req, res) {
   const post = {
