@@ -41,13 +41,20 @@ app.get("/compose", function (req, res) {
   res.render("compose");
 });
 
+app.get("/posts/:postTitle", (req, res) => {
+  res.render("post", {
+    postTitle: "test",
+    postDescr: "testDescr",
+  });
+});
+
 app.post("/compose", function (req, res) {
   const post = {
     title: req.body.postTitle,
     description: req.body.postDescr,
   };
-postData.push(post);
-res.redirect('/');
+  postData.push(post);
+  res.redirect("/");
 });
 
 app.listen(3000, function () {
