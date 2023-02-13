@@ -3,7 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-
+const _ = require("lodash");
 const postData = [];
 
 const homeStartingContent =
@@ -42,16 +42,24 @@ app.get("/compose", function (req, res) {
 });
 
 app.get("/posts/:postTitle", (req, res) => {
-  const requestTitle = req.params.postTitle;
-  const found = postData.find(post => post.title == requestTitle)
-  console.log(found);
+  const requestTitle = _.lowerCase(req.params.postTitle);
 
-  res.render("post", {
-    postTitle: found.title,
-    postDescr: found.description,
+  postData.forEach(post => {
+    const storedTitle = _.lowerCase(post.title);
+
+    if (storedTitle === requestTitle) {
+      console.log('match found');
+      res.render("post", {
+        postTitle: post.title,
+        postDescr: post.description,
+      });
+    } else {
+      console.log('not a match')
+    }
   });
-});
 
+  
+});
 
 app.post("/compose", function (req, res) {
   const post = {
