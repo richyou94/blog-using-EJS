@@ -3,9 +3,11 @@
 <p><%= content %></p>
 
 <% postData.forEach((post) => { %>
-    <h2><%= post.title %></h2>
-    <p><%= post.description %></p>
-<% }) %>
-
-
-<%- include('partials/footer'); -%>
+<h2><%= post.title %></h2>
+<p>
+  <%= post.description.substring(0, 100) + " ..." %><a
+    href="posts/<%=post.title%>"
+    >Read More</a
+  >
+</p>
+<% }) %> <%- include('partials/footer'); -%>
