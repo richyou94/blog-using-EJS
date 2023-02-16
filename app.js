@@ -70,22 +70,33 @@ app.get("/compose", function (req, res) {
   res.render("compose");
 });
 
-app.get("/posts/:postTitle", (req, res) => {
-  const requestTitle = _.lowerCase(req.params.postTitle);
+app.get("/posts/:postId", (req, res) => {
+  const postId = req.params.postId;
 
-  postData.forEach((post) => {
-    const storedTitle = _.lowerCase(post.title);
-
-    if (storedTitle === requestTitle) {
-      console.log("match found");
-      res.render("post", {
-        postTitle: post.title,
-        postDescr: post.description,
-      });
+  Blog.findOne({ _id: postId }, function (err, data) {
+    if (err) {
+      res.redirect("/");
     } else {
-      console.log("not a match");
+      res.render("post", {
+        postTitle: data.title,
+        postDescr: data.description,
+      });
     }
   });
+
+  // postData.forEach((post) => {
+  //   const storedTitle = _.lowerCase(post.title);
+
+  //   if (storedTitle === requestTitle) {
+  //     console.log("match found");
+  //     res.render("post", {
+  //       postTitle: post.title,
+  //       postDescr: post.description,
+  //     });
+  //   } else {
+  //     console.log("not a match");
+  //   }
+  // });
 });
 
 app.post("/compose", function (req, res) {
