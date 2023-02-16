@@ -36,24 +36,30 @@ const blogsSchema = {
   },
 };
 
-const Blog = mongoose.model('Blog', blogsSchema);
+const Blog = mongoose.model("Blog", blogsSchema);
 
 const blog = new Blog({
   title: "Welcome to the blog",
-  description: "This is sample initial data of the blog."
-})
+  description: "This is sample initial data of the blog.",
+});
 
 app.get("/", function (req, res) {
-  res.render("home", {
-    content: homeStartingContent,
-    postData: postData,
+  Blog.find({}, function (err, blogData) {
+    if (!err) {
+      res.render("home", {
+        content: homeStartingContent,
+        postData: blogData,
+      });
+    }
   });
 });
+
 app.get("/about", function (req, res) {
   res.render("about", {
     content: aboutContent,
   });
 });
+
 app.get("/contact", function (req, res) {
   res.render("contact", {
     content: contactContent,
@@ -83,15 +89,14 @@ app.get("/posts/:postTitle", (req, res) => {
 });
 
 app.post("/compose", function (req, res) {
-  
   const blog = new Blog({
     title: req.body.postTitle,
     description: req.body.postDescr,
-  })
-  
+  });
+
   blog.save();
 
-  res.redirect("/compose");
+  res.redirect("/");
 });
 
 app.listen(3000, function () {
